@@ -7,7 +7,7 @@
     using SmartSelectors;
     using SmartSelectors.Selenium;
 
-    public class GItHubReadmeExamples
+    public class GitHubReadmeExamples
     {
         private IWebDriver _driver;
 
