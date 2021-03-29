@@ -1,6 +1,7 @@
 ﻿namespace dot_net_selenium_examples
 {
     using System;
+    using FluentAssertions;
     using NUnit.Framework;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Chrome;
@@ -10,6 +11,8 @@
     public class GitHubReadmeExamples
     {
         private IWebDriver _driver;
+        private const string WorkflowsXPath = "//h1[@class='d-none d-lg-block f3']";
+        private const string ExpectedHeader = "All workflows";
 
         [SetUp]
         public void SetUp()
@@ -20,19 +23,23 @@
         }
 
         [Test]
-        public void ClickFavoriteIcon()
+        public void GoToGitHubActions()
         {
             _driver.Navigate().GoToUrl("https://github.com/SmartSelectors/smart-selectors-dot-net");
-            var favoriteIcon = _driver.FindIcon(Icons.Favorite);
-            favoriteIcon.Click();
+            var actionsIcon = _driver.FindIcon(Icons.Arrow_Right);
+            actionsIcon.Click();
+            var header = _driver.FindElement(By.XPath(WorkflowsXPath));
+            header.Text.Should().Be(ExpectedHeader);
         }
 
         [Test]
-        public void ClickFavoriteIconWithSelfHealingSelector()
+        public void GoToGitHubActionsWithSelfHealingSelector()
         {
             _driver.Navigate().GoToUrl("https://github.com/SmartSelectors/smart-selectors-dot-net");
-            var favoriteIcon = _driver.FindElement(By.XPath("//button[contains(@class,'js-toggler-target')]"), Icons.Favorite);
-            favoriteIcon.Click();
+            var actionsIcon = _driver.FindElement(By.XPath("#brokenSelector"), Icons.Arrow_Right);
+            actionsIcon.Click();
+            var header = _driver.FindElement(By.XPath(WorkflowsXPath));
+            header.Text.Should().Be(ExpectedHeader);
         }
 
         [TearDown]
